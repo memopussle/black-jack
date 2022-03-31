@@ -68,11 +68,42 @@ function startGame() {
   hidden = deck.pop(); //remove a card from the end of array
   //move that hidden value to dealerSum
   dealerSum += getValue(hidden);
+  dealerAceCount += checkAce(hidden);
+  // console.log(hidden);
+  // console.log(dealerSum);
+
+  //if dealerSum is < 17, we will give dealer a card
+  while (dealerSum < 17) {
+    //<img>
+    let cardImg = document.createElement("img");
+    let card= deck.pop();
+    cardImg.src = "img/" + card + ".png";
+    dealerSum += getValue(card);
+    dealerAceCount += checkAce(card);
+    document.getElementById("dealer-cards").append(cardImg);
+  }
 }
 
 function getValue(card) {
   let data = card.split("-"); // "4-C" -> splitting value into 2 parts; 4 & C -> [4,C]
   let value = data[0];
 
+  //check if value contanis a digit
+  //if not a number
+  if (isNaN(value)) {
+    // A J Q K so if it's not A, it will be J Q K
+    if (value == "A") {
+      return 11;
+    }
+    return 10;
+  }
 
+  return parseInt(value); // will return a value if its a value
+}
+
+function checkAce(card) {
+  if (card[0] == "A") {
+    return 1;
+  }
+  return 0;
 }
