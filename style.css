@@ -28,3 +28,9 @@ body {
     height: 50px;
     font-size: 20px;
 }
+
+#your-cards img {
+  height: 175px;
+  width: 125px;
+  margin: 1px;
+}
