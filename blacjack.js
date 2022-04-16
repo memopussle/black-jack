@@ -21,6 +21,7 @@ window.onload = function () {
   startGame();
 };
 
+// store values 
 function buildDeck() {
   let values = [
     "A",
@@ -37,7 +38,10 @@ function buildDeck() {
     "Q",
     "K",
   ];
+
+  //store suits/types
   let types = ["C", "D", "H", "S"];
+
   deck = [];
 
   //use for loops to loop through this array to push the format types + values
@@ -50,6 +54,7 @@ function buildDeck() {
 
   //   console.log(deck);
 }
+
 
 //shuffle the order of card in deck every refresh
 function shuffleDeck() {
@@ -76,10 +81,10 @@ function startGame() {
   while (dealerSum < 17) {
     //<img src="img/A-C.png">
     // we append the card into while loop until dealer has card with the sum of 17 or greater
-    let cardImg = document.createElement("img"); // create an imgcard
-    let card= deck.pop(); // got a card from deck
-    cardImg.src = "img/" + card + ".png"; // set the src of img card 
-    dealerSum += getValue(card);// increment dealerSum
+    let cardImg = document.createElement("img");
+    let card = deck.pop(); // got a card from deck
+    cardImg.src = "img/" + card + ".png"; // set the src of img card
+    dealerSum += getValue(card); // dealerSum  increment
     dealerAceCount += checkAce(card); // count for the dealer's Ace
     document.getElementById("dealer-cards").append(cardImg);
   }
@@ -87,6 +92,7 @@ function startGame() {
 
   //give user card
   for (let i = 0; i < 2; i++) {
+    //<img src="img/4-C.png">
     let cardImg = document.createElement("img"); // create an imgcard
     let card = deck.pop(); // got a card from deck
     cardImg.src = "img/" + card + ".png"; // set the src of img card
@@ -94,13 +100,14 @@ function startGame() {
     yourAceCount += checkAce(card); // count for the dealer's Ace
     document.getElementById("your-cards").append(cardImg);
   }
+
+  
   console.log(yourSum);
 
   //implement hit button
   document.getElementById("hit").addEventListener("click", hit);
   //implement stand button
-   document.getElementById("stand").addEventListener("click", stand);
-
+  document.getElementById("stand").addEventListener("click", stand);
 }
 
 function hit() {
@@ -108,17 +115,18 @@ function hit() {
   if (!canHit) {
     return;
   }
-   let cardImg = document.createElement("img");
-   let card = deck.pop(); 
-   cardImg.src = "img/" + card + ".png";
-   yourSum += getValue(card); 
-   yourAceCount += checkAce(card); 
-   document.getElementById("your-cards").append(cardImg);
+  let cardImg = document.createElement("img");
+  let card = deck.pop();
+  cardImg.src = "img/" + card + ".png";
+  yourSum += getValue(card);
+  yourAceCount += checkAce(card);
+  document.getElementById("your-cards").append(cardImg);
 
-   //will check your Sum and take consideration into yourAcecount
-   if(reduceAce(yourSum, yourAceCount) > 21) { //A,J, 8 -> 1 + 10 + 8
-     canHit = false;
-   }
+  //will check your Sum and take consideration into yourAcecount
+  if (reduceAce(yourSum, yourAceCount) > 21) {
+    //A,J, 8 -> 1 + 10 + 8
+    canHit = false;
+  }
 }
 
 function stand() {
@@ -128,36 +136,30 @@ function stand() {
   canHit = false; // user is not able to draw card if choose stand
   document.getElementById("hidden").src = "img/" + hidden + ".png";
 
-  let message ="";
-  if(yourSum > 21) {
+  let message = "";
+  if (yourSum > 21) {
     message = "You loose";
   } else if (dealerSum > 21) {
     message = "You win!";
   }
   //both user and dealer have sum <=21
   else if (yourSum == dealerSum) {
-    message ="Tie!";
-  }
-  else if ( yourSum > dealerSum) {
+    message = "Tie!";
+  } else if (yourSum > dealerSum) {
     message = "You win!";
-  }
-  else if (yourSum < dealerSum) {
+  } else if (yourSum < dealerSum) {
     message = "You loose";
   }
 
-  // populate the message onto #result
+  // populate results on the browser
   document.getElementById("result").innerText = message;
   document.getElementById("dealer-sum").innerText = dealerSum;
   document.getElementById("your-sum").innerText = yourSum;
- 
 }
 
-
-
 function getValue(card) {
-  let data = card.split("-"); // "4-C" -> splitting value into 2 parts; 4 & C -> [4,C]
+  let data = card.split("-");// "4-C" -> splitting value into 2 parts; 4 & C -> [4,C]
   let value = data[0];
-
   //check if value contanis a digit
   //if not a number
   if (isNaN(value)) {
@@ -167,6 +169,7 @@ function getValue(card) {
     }
     return 10;
   }
+
 
   return parseInt(value); // will return a value if its a value
 }
@@ -180,9 +183,9 @@ function checkAce(card) {
 
 //reduce Ace if the sume is > 21
 function reduceAce(playerSum, playerAceCount) {
-  while(playerSum > 21 && playerAceCount > 0) {
-      playerSum -= 10;
-      playerAceCount -= 1;
+  while (playerSum > 21 && playerAceCount > 0) {
+    playerSum -= 10;
+    playerAceCount -= 1;
   }
   return playerSum;
 }
